@@ -33,22 +33,24 @@ accepted too but never required.
 | Multiple choice | `1`–`4` to answer · `Enter` to continue |
 | Type it | `Enter` to check, then `Enter` to continue |
 
-## Files
+## One file
 
-| File | Purpose |
-| --- | --- |
-| `index.html` | The page shell |
-| `styles.css` | All styling, including both themes |
-| `app.js` | Quiz logic, rendering, keyboard and timer |
-| `vocab.js` | The word list |
-| `vercel.json` | Static hosting config |
+The whole tool is `index.html` — styles, word list and logic inlined, about
+60 KB. No build step, no dependencies, no network calls.
 
-No build step, no dependencies, no framework. Opening `index.html` in a browser
-runs the whole thing.
+That means you can host it, email it, drop it in Google Drive, or hand it to
+someone on a USB stick, and double-clicking it just works — offline, on a
+school laptop, with nothing installed.
+
+Inside the file, in order:
+
+1. **The styles** — everything visual, including both themes.
+2. **The word list** — marked `THE WORD LIST`.
+3. **The app** — marked `THE APP`.
 
 ## Editing the word list
 
-Every word lives in `vocab.js` as one line:
+Search `index.html` for `THE WORD LIST`. Every word is one line:
 
 ```js
 { stage: 3, latin: "taberna", english: ["store", "inn"] },
@@ -61,14 +63,11 @@ Every word lives in `vocab.js` as one line:
   a hint on flashcards and accepted when typing, but never required.
 
 To cover more stages, add entries with a higher `stage` number and raise
-`MAX_STAGE` near the top of `app.js`.
+`MAX_STAGE`, just below the word list.
 
 ## Running it locally
 
-```bash
-python3 -m http.server 8000
-# then open http://localhost:8000
-```
+Double-click `index.html`. That is the whole procedure.
 
 ## Deploying to Vercel
 
