@@ -361,6 +361,19 @@ input[type="range"] { flex: 1; min-width: 0; height: 44px; accent-color: var(--a
 .rows-empty { padding: 22px 16px; text-align: center; color: var(--muted); font-size: 14px; }
 .review-actions { display: flex; flex-direction: column; gap: 10px; }
 
+.words-stage {
+  position: sticky; top: 0; padding: 8px 16px; background: var(--paper);
+  border-bottom: 1px solid var(--line); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--accent); font-weight: 600;
+}
+.word-row {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 12px;
+  padding: 10px 16px; border-bottom: 1px solid var(--line); align-items: baseline;
+}
+.word-latin { font-family: var(--hero); font-size: 18px; overflow-wrap: break-word; }
+.word-perfect { color: var(--muted); font-size: 15px; font-style: italic; }
+.word-english { font-size: 14px; color: var(--muted); overflow-wrap: break-word; }
+
 .foot { text-align: center; font-size: 12px; color: var(--muted); padding-top: 4px; }
 
 /* ---------- motion ---------- */
@@ -400,16 +413,24 @@ input[type="range"] { flex: 1; min-width: 0; height: 44px; accent-color: var(--a
 <!-- ============================ THE WORD LIST ============================ -->
 <script>
 /* ============================================================
-   Cambridge Latin Course — Unit 1, Stages I–XII vocabulary.
+   North American Cambridge Latin Course, 6th edition (2024) —
+   Unit 1, Stages I–XII vocabulary checklists.
    Shape: { stage, latin, english: [...], perfect? }
    The `english` array lists every meaning that counts as correct.
+
+   Checked against the 6th edition:
+     Stages 4, 8, 12 — word for word from CSCP's published 6th
+     edition sample (Student's Book pp. 66, 138, 210).
+   Not yet checked (carried over from the earlier editions, with
+   the known moves applied: ecce! → 4, leō → 8, signum → 8; the
+   room names ātrium/cubiculum/culīna/tablīnum/triclīnium are no
+   longer checklist words):
+     Stages 1–3, 5–7, 9–11 — check them against the book's
+     Vocabulary checklist pages and fix any line that differs.
    ============================================================ */
 window.VOCAB = [
-  { stage: 1, latin: "ātrium", english: ["atrium", "reception hall"] },
   { stage: 1, latin: "canis", english: ["dog"] },
   { stage: 1, latin: "coquus", english: ["cook"] },
-  { stage: 1, latin: "cubiculum", english: ["bedroom"] },
-  { stage: 1, latin: "culīna", english: ["kitchen"] },
   { stage: 1, latin: "est", english: ["is"] },
   { stage: 1, latin: "fīlius", english: ["son"] },
   { stage: 1, latin: "hortus", english: ["garden"] },
@@ -419,8 +440,6 @@ window.VOCAB = [
   { stage: 1, latin: "pater", english: ["father"] },
   { stage: 1, latin: "sedet", english: ["sits", "is sitting"] },
   { stage: 1, latin: "servus", english: ["slave"] },
-  { stage: 1, latin: "tablīnum", english: ["study"] },
-  { stage: 1, latin: "triclīnium", english: ["dining room"] },
   { stage: 1, latin: "via", english: ["street"] },
   { stage: 2, latin: "amīcus", english: ["friend"] },
   { stage: 2, latin: "ancilla", english: ["slave-girl", "maid"] },
@@ -438,13 +457,11 @@ window.VOCAB = [
   { stage: 3, latin: "bibit", english: ["drinks"] },
   { stage: 3, latin: "circumspectat", english: ["looks around"] },
   { stage: 3, latin: "clāmat", english: ["shouts"] },
-  { stage: 3, latin: "ecce!", english: ["look!"] },
   { stage: 3, latin: "et", english: ["and"] },
   { stage: 3, latin: "exit", english: ["goes out"] },
   { stage: 3, latin: "exspectat", english: ["waits for"] },
   { stage: 3, latin: "iānua", english: ["door"] },
   { stage: 3, latin: "īrātus", english: ["angry"] },
-  { stage: 3, latin: "leō", english: ["lion"] },
   { stage: 3, latin: "magnus", english: ["big", "large"] },
   { stage: 3, latin: "nāvis", english: ["ship"] },
   { stage: 3, latin: "nōn", english: ["not"] },
@@ -456,27 +473,25 @@ window.VOCAB = [
   { stage: 3, latin: "taberna", english: ["store", "inn"] },
   { stage: 3, latin: "videt", english: ["sees"] },
   { stage: 3, latin: "vīnum", english: ["wine"] },
-  { stage: 4, latin: "agit", english: ["does", "acts"] },
+  { stage: 4, latin: "agit", english: ["does"] },
   { stage: 4, latin: "ānulus", english: ["ring"] },
   { stage: 4, latin: "coquit", english: ["cooks"] },
   { stage: 4, latin: "cūr?", english: ["why?"] },
   { stage: 4, latin: "ē", english: ["from", "out of"] },
+  { stage: 4, latin: "ecce!", english: ["look!"] },
   { stage: 4, latin: "ego", english: ["I"] },
   { stage: 4, latin: "ēheu!", english: ["oh dear!", "oh no!"] },
+  { stage: 4, latin: "forum", english: ["forum", "marketplace"] },
   { stage: 4, latin: "habet", english: ["has"] },
   { stage: 4, latin: "inquit", english: ["says"] },
-  { stage: 4, latin: "iūdex", english: ["judge"] },
-  { stage: 4, latin: "mendāx", english: ["liar"] },
   { stage: 4, latin: "pecūnia", english: ["money"] },
   { stage: 4, latin: "perterritus", english: ["terrified"] },
-  { stage: 4, latin: "poēta", english: ["poet"] },
   { stage: 4, latin: "quaerit", english: ["looks for", "searches for"] },
   { stage: 4, latin: "quis?", english: ["who?"] },
-  { stage: 4, latin: "reddit", english: ["gives back", "restores"] },
+  { stage: 4, latin: "reddit", english: ["gives back"] },
   { stage: 4, latin: "satis", english: ["enough"] },
   { stage: 4, latin: "sed", english: ["but"] },
-  { stage: 4, latin: "signum", english: ["sign", "seal", "signal"] },
-  { stage: 4, latin: "tū", english: ["you (singular)"] },
+  { stage: 4, latin: "tū", english: ["you"] },
   { stage: 4, latin: "vocat", english: ["calls"] },
   { stage: 5, latin: "adest", english: ["is here"] },
   { stage: 5, latin: "adsunt", english: ["are here"] },
@@ -562,7 +577,8 @@ window.VOCAB = [
   { stage: 8, latin: "gladius", english: ["sword"] },
   { stage: 8, latin: "hic", english: ["this"] },
   { stage: 8, latin: "ignāvus", english: ["cowardly"] },
-  { stage: 8, latin: "nūntius", english: ["messenger"] },
+  { stage: 8, latin: "leō", english: ["lion"] },
+  { stage: 8, latin: "nūntius", english: ["messenger", "announcer"] },
   { stage: 8, latin: "pēs", english: ["foot"] },
   { stage: 8, latin: "porta", english: ["gate"] },
   { stage: 8, latin: "postulat", perfect: "postulāvit", english: ["demands"] },
@@ -570,8 +586,8 @@ window.VOCAB = [
   { stage: 8, latin: "pugnat", perfect: "pugnāvit", english: ["fights"] },
   { stage: 8, latin: "saepe", english: ["often"] },
   { stage: 8, latin: "sanguis", english: ["blood"] },
-  { stage: 8, latin: "silva", english: ["wood", "forest"] },
-  { stage: 8, latin: "spectāculum", english: ["show", "spectacle"] },
+  { stage: 8, latin: "signum", english: ["seal", "signal", "sign"] },
+  { stage: 8, latin: "silva", english: ["forest"] },
   { stage: 8, latin: "statim", english: ["at once"] },
   { stage: 8, latin: "tōtus", english: ["whole"] },
   { stage: 9, latin: "agnōscit", perfect: "agnōvit", english: ["recognizes"] },
@@ -642,27 +658,30 @@ window.VOCAB = [
   { stage: 11, latin: "verberat", perfect: "verberāvit", english: ["strikes", "beats"] },
   { stage: 11, latin: "vir", english: ["man"] },
   { stage: 12, latin: "āmittit", perfect: "āmīsit", english: ["loses"] },
+  { stage: 12, latin: "bonus", english: ["good", "worthy"] },
   { stage: 12, latin: "complet", perfect: "complēvit", english: ["fills"] },
   { stage: 12, latin: "custōdit", perfect: "custōdīvit", english: ["guards"] },
   { stage: 12, latin: "epistula", english: ["letter"] },
   { stage: 12, latin: "flamma", english: ["flame"] },
   { stage: 12, latin: "fortiter", english: ["bravely"] },
-  { stage: 12, latin: "frūstrā", english: ["in vain"] },
+  { stage: 12, latin: "frūstrā", english: ["in vain", "unsuccessfully"] },
   { stage: 12, latin: "fugit", perfect: "fūgit", english: ["runs away", "flees"] },
   { stage: 12, latin: "fundus", english: ["farm"] },
   { stage: 12, latin: "iacet", perfect: "iacuit", english: ["lies"] },
   { stage: 12, latin: "iam", english: ["now"] },
-  { stage: 12, latin: "igitur", english: ["therefore", "and so"] },
   { stage: 12, latin: "mīrābilis", english: ["strange", "extraordinary"] },
   { stage: 12, latin: "mittit", perfect: "mīsit", english: ["sends"] },
   { stage: 12, latin: "mōns", english: ["mountain"] },
   { stage: 12, latin: "optimē", english: ["very well"] },
   { stage: 12, latin: "paene", english: ["nearly", "almost"] },
-  { stage: 12, latin: "sentit", perfect: "sēnsit", english: ["feels", "notices"] },
+  { stage: 12, latin: "sentit", perfect: "sēnsit", english: ["feels"] },
   { stage: 12, latin: "tandem", english: ["at last"] },
   { stage: 12, latin: "templum", english: ["temple"] },
   { stage: 12, latin: "terra", english: ["ground", "land"] },
   { stage: 12, latin: "timet", perfect: "timuit", english: ["is afraid", "fears"] },
+  { stage: 12, latin: "ūnus", english: ["one"] },
+  { stage: 12, latin: "duo", english: ["two"] },
+  { stage: 12, latin: "trēs", english: ["three"] },
 ];
 </script>
 
@@ -796,6 +815,12 @@ window.VOCAB = [
 
   function glossOf(entry) { return entry.english.join(", "); }
 
+  // Two words overlap if any listed meaning matches: iam / nunc ("now").
+  function sharesMeaning(a, b) {
+    var mine = a.english.map(norm);
+    return b.english.some(function (m) { return mine.indexOf(norm(m)) >= 0; });
+  }
+
   function acceptedFor(q) {
     var e = q.entry;
     var out = [];
@@ -805,6 +830,11 @@ window.VOCAB = [
     if (q.dir === "en-la") {
       push(variantsOf(e.latin));
       if (e.perfect) push(variantsOf(e.perfect));   // accepted, never required
+      // Another checklist word with the same leading meaning is right too:
+      // "now" takes iam or nunc, "hurries" takes contendit or festīnat.
+      VOCAB.forEach(function (o) {
+        if (o !== e && norm(o.english[0]) === norm(e.english[0])) push(variantsOf(o.latin));
+      });
     } else {
       e.english.forEach(function (m) { push(variantsOf(m)); });
     }
@@ -847,10 +877,13 @@ window.VOCAB = [
       });
     }
 
+    // Never offer a second right answer (spectat vs īnspicit, "looks at").
+    function fair(e) { return e !== entry && !sharesMeaning(e, entry); }
+
     var type = wordType(entry);
-    take(pool.filter(function (e) { return e !== entry && wordType(e) === type; }));
-    if (picks.length < want) take(pool.filter(function (e) { return e !== entry; }));
-    if (picks.length < want) take(VOCAB.filter(function (e) { return e !== entry; }));
+    take(pool.filter(function (e) { return fair(e) && wordType(e) === type; }));
+    if (picks.length < want) take(pool.filter(fair));
+    if (picks.length < want) take(VOCAB.filter(fair));
     return picks;
   }
 
@@ -914,10 +947,27 @@ window.VOCAB = [
 
   /* ---------- session build ---------- */
 
+  // Deal `n` words from `entries`. If the scope has fewer words than the
+  // session wants, go round again: every word is used once per round, each
+  // round is freshly shuffled, and no word comes up twice in a row.
+  function dealWords(entries, n) {
+    var out = [];
+    while (entries.length && out.length < n) {
+      var round = shuffle(entries);
+      var last = out[out.length - 1];
+      if (round.length > 1 && round[0] === last) {
+        var swap = 1 + Math.floor(Math.random() * (round.length - 1));
+        var tmp = round[0]; round[0] = round[swap]; round[swap] = tmp;
+      }
+      out = out.concat(round.slice(0, n - out.length));
+    }
+    return out;
+  }
+
   function buildQueue(entries, c) {
     var pool = poolFor(c);
     if (pool.length < 2) pool = VOCAB;
-    return shuffle(entries).map(function (entry) {
+    return entries.map(function (entry) {
       var dir = c.direction === "mixed"
         ? (Math.random() < 0.5 ? "la-en" : "en-la")
         : c.direction;
@@ -959,9 +1009,19 @@ window.VOCAB = [
     var pool = poolFor(c);
     if (!pool.length) return;
     var want = wantedLength(c);
-    var n = Math.min(want, pool.length);
-    var note = n < want ? "Only " + n + " words in this scope — session shortened." : "";
-    startSession(shuffle(pool).slice(0, n), note);
+    var note = want > pool.length
+      ? pool.length + " words in this scope — each comes up about " + Math.ceil(want / pool.length) + "×."
+      : "";
+    startSession(dealWords(pool, want), note);
+  }
+
+  // Each missed word once, even if a repeating session missed it twice.
+  function missedEntries() {
+    var out = [];
+    state.results.forEach(function (r) {
+      if (!r.correct && out.indexOf(r.q.entry) < 0) out.push(r.q.entry);
+    });
+    return out;
   }
 
   /* ---------- answering ---------- */
@@ -1040,8 +1100,8 @@ window.VOCAB = [
   function setupHTML() {
     var c = state.config;
     var pool = poolFor(c);
-    var want = wantedLength(c);
-    var n = Math.min(want, pool.length);
+    var n = wantedLength(c);
+    var repeats = n > pool.length && pool.length > 0;
 
     var direction = '<div class="options">' +
       pill("direction", "la-en", "Latin → English", c.direction === "la-en") +
@@ -1094,10 +1154,12 @@ window.VOCAB = [
       group("Direction", "", direction) +
       group("Format", "", format) +
       group("Scope", pool.length + " words", scope) +
-      group("Length", n < want ? "capped at " + n : "", length) +
+      group("Length", repeats ? "words will repeat" : "", length) +
       group("Timer", "", timer) +
       '<div class="start-block">' +
         '<button type="button" class="btn-primary" data-action="start">Begin session</button>' +
+        '<button type="button" class="btn-secondary" data-action="words">See the ' + pool.length +
+          " word" + (pool.length === 1 ? "" : "s") + "</button>" +
         '<div class="summary">' + esc(summary) + "</div>" +
       "</div>" +
       '<p class="foot">' + VOCAB.length + " words · nothing to sign up for · your settings stay on this device</p>" +
@@ -1212,6 +1274,7 @@ window.VOCAB = [
     var total = s.results.length;
     var right = s.results.filter(function (r) { return r.correct; }).length;
     var missed = s.results.filter(function (r) { return !r.correct; });
+    var retryCount = missedEntries().length;
     var mins = Math.floor(s.elapsed / 60);
     var secs = s.elapsed % 60;
 
@@ -1245,11 +1308,40 @@ window.VOCAB = [
       "</header>" + filters +
       '<div class="rows"><div class="rows-scroll">' + rows + "</div></div>" +
       '<div class="review-actions">' +
-        (missed.length
-          ? '<button type="button" class="btn-primary" data-action="retry">Retry ' + missed.length +
-            " missed word" + (missed.length === 1 ? "" : "s") + "</button>"
+        (retryCount
+          ? '<button type="button" class="btn-primary" data-action="retry">Retry ' + retryCount +
+            " missed word" + (retryCount === 1 ? "" : "s") + "</button>"
           : "") +
         '<button type="button" class="btn-secondary" data-action="new">New session</button>' +
+      "</div></main>";
+  }
+
+  // The checklist for the current scope, stage by stage, to read before testing.
+  function wordsHTML() {
+    var c = state.config;
+    var pool = poolFor(c);
+    var body = "";
+    var current = null;
+    pool.forEach(function (e) {
+      if (e.stage !== current) {
+        current = e.stage;
+        body += '<div class="words-stage">Stage ' + current + "</div>";
+      }
+      body += '<div class="word-row"><div class="word-latin">' + esc(e.latin) +
+        (e.perfect ? '<span class="word-perfect">: ' + esc(e.perfect) + "</span>" : "") +
+        '</div><div class="word-english">' + esc(glossOf(e)) + "</div></div>";
+    });
+
+    return '<main class="screen">' +
+      '<header class="review-head">' +
+        '<div class="review-kicker">Vocabulary checklist</div>' +
+        '<div class="review-score">' + (c.scopeMode === "single" ? "Stage " + c.stage : "Stages 1–" + c.stage) + "</div>" +
+        '<div class="review-line">' + pool.length + " words</div>" +
+      "</header>" +
+      '<div class="rows"><div class="rows-scroll">' + body + "</div></div>" +
+      '<div class="review-actions">' +
+        '<button type="button" class="btn-primary" data-action="start">Begin session</button>' +
+        '<button type="button" class="btn-secondary" data-action="new">Back to settings</button>' +
       "</div></main>";
   }
 
@@ -1275,7 +1367,9 @@ window.VOCAB = [
 
       app.innerHTML = state.screen === "setup" ? setupHTML()
         : state.screen === "session" ? sessionHTML()
+        : state.screen === "words" ? wordsHTML()
         : reviewHTML();
+      if (state.screen === "words") window.scrollTo(0, 0);
 
       if (state.screen === "session" && state.config.format === "type" && !state.answered) {
         var input = document.getElementById("type-input");
@@ -1307,6 +1401,7 @@ window.VOCAB = [
       case "length": setConfig("length", value === "custom" ? "custom" : parseInt(value, 10)); break;
       case "timerOn": setConfig("timerOn", value === "on"); break;
       case "start": beginFromSetup(); break;
+      case "words": state.screen = "words"; render(); break;
       case "choose": chooseOption(parseInt(value, 10)); break;
       case "flip": state.flipped = true; render(); break;
       case "got": gradeFlash(true); setTimeout(nextQuestion, 200); break;
@@ -1315,8 +1410,7 @@ window.VOCAB = [
       case "quit": finishSession(); break;
       case "filter": state.filter = value; render(); break;
       case "retry":
-        startSession(state.results.filter(function (r) { return !r.correct; })
-          .map(function (r) { return r.q.entry; }), "");
+        startSession(shuffle(missedEntries()), "");
         break;
       case "new": state.screen = "setup"; render(); break;
     }
@@ -1418,7 +1512,8 @@ window.VOCAB = [
   // Exposed for the smoke tests only.
   window.__vocab = {
     norm: norm, isCorrect: isCorrect, variantsOf: variantsOf,
-    acceptedFor: acceptedFor, pickDistractors: pickDistractors, state: state
+    acceptedFor: acceptedFor, pickDistractors: pickDistractors, dealWords: dealWords,
+    missedEntries: missedEntries, state: state
   };
 })();
 </script>

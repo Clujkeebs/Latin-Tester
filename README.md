@@ -1,6 +1,7 @@
 # Vocābulārium — Latin Vocabulary Tester
 
-A free study tool for **Cambridge Latin Course** vocabulary, Stages I–XII.
+A free study tool for the **North American Cambridge Latin Course, 6th edition**
+vocabulary checklists, Unit 1, Stages I–XII.
 One page, no accounts, no tracking, nothing to install — open it and study.
 
 ## What it does
@@ -8,10 +9,13 @@ One page, no accounts, no tracking, nothing to install — open it and study.
 - **Three formats** — flashcards, multiple choice, or type the answer.
 - **Three directions** — Latin → English, English → Latin, or mixed.
 - **Pick your scope** — a single stage, or everything up to a stage.
-- **Session length** — 10, 25, 50, 100, or a custom number of questions.
+- **Session length** — 10, 25, 50, 100, or a custom number of questions. If the
+  scope has fewer words than you asked for, the words repeat: every word comes
+  up once per round, each round is reshuffled, and no word appears twice in a row.
+- **See the words** — browse the checklist for your scope before you start.
 - **Optional timer** — 5–30 seconds per question.
 - **Review at the end** — see every word, filter to the ones you missed, and
-  retry just those.
+  retry just those (each missed word once).
 - **Light and dark mode** — follows your device by default; the Auto / Light /
   Dark button in the corner overrides it and remembers your choice.
 
@@ -22,7 +26,9 @@ anywhere — there is no server, no sign-up, and no data collection.
 
 Macrons are optional (`atrium` = `ātrium`), capitals don't matter, leading
 articles are ignored (`the dog` = `dog`), and any listed meaning counts
-(`works` or `is working`). For verbs that list a perfect form, the perfect is
+(`works` or `is working`). Checklist synonyms count when typing Latin: for
+"now", both `iam` and `nunc` are right. Multiple choice never offers two
+right answers. For verbs that list a perfect form, the perfect is
 accepted too but never required.
 
 ### Keyboard shortcuts
@@ -47,6 +53,16 @@ Inside the file, in order:
 1. **The styles** — everything visual, including both themes.
 2. **The word list** — marked `THE WORD LIST`.
 3. **The app** — marked `THE APP`.
+
+## Which words are checked against the 6th edition
+
+- **Stages 4, 8, 12** — copied word for word from the 6th edition sample
+  that CSCP has published (Student's Book pp. 66, 138, 210).
+- **Stages 1–3, 5–7, 9–11** — carried over from the earlier editions, with
+  the moves those three lists show applied (ecce! → Stage 4; leō and signum
+  → Stage 8). The room names (ātrium, cubiculum, culīna, tablīnum,
+  triclīnium) are no longer on the checklists. Check these stages against
+  the Vocabulary checklist page at the end of each stage in the book.
 
 ## Editing the word list
 
