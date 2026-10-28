@@ -13,13 +13,26 @@ One page, no accounts, no tracking, nothing to install — open it and study.
   scope has fewer words than you asked for, the words repeat: every word comes
   up once per round, each round is reshuffled, and no word appears twice in a row.
 - **See the words** — browse the checklist for your scope before you start.
+- **Verb endings** — practise the checklist verbs in the present, imperfect
+  and perfect, singular (s/he) and plural (they): *portat · portant,
+  portābat · portābant, portāvit · portāvērunt*. Either **name the form**
+  ("which form is *portābant*?") or **make the form** ("*portat* →
+  imperfect, plural"), or a mix. Pick any of the three tenses. "See the verb
+  tables" shows every verb in your scope written out.
+- **Weak words** — every answer is remembered on your device. A word you miss
+  is marked as one you keep missing until you get it right twice in a row,
+  and "Only ones I keep missing" quizzes just those. They're highlighted in
+  the word list too.
+- **Test mode** — no answers shown until the end, then a letter grade
+  (A 90%+, B 80%+, C 70%+, D 60%+). Ending early counts the rest as skipped.
+  Tests use multiple choice or typing.
 - **Optional timer** — 5–30 seconds per question.
 - **Review at the end** — see every word, filter to the ones you missed, and
   retry just those (each missed word once).
 - **Light and dark mode** — follows your device by default; the Auto / Light /
   Dark button in the corner overrides it and remembers your choice.
 
-Your format and scope settings are saved in your own browser. Nothing is sent
+Your settings and your weak-word progress are saved in your own browser. Nothing is sent
 anywhere — there is no server, no sign-up, and no data collection.
 
 ### Typing answers is forgiving
@@ -52,7 +65,9 @@ Inside the file, in order:
 
 1. **The styles** — everything visual, including both themes.
 2. **The word list** — marked `THE WORD LIST`.
-3. **The app** — marked `THE APP`.
+3. **The verb forms** — marked `VERB FORMS`: imperfect and perfect for every
+   checklist verb, used by the verb endings practice.
+4. **The app** — marked `THE APP`.
 
 ## Which words are checked against the 6th edition
 

@@ -276,6 +276,9 @@ input[type="range"] { flex: 1; min-width: 0; height: 44px; accent-color: var(--a
   line-height: 1.1; letter-spacing: -.015em; overflow-wrap: break-word;
 }
 .prompt-word.gloss { font-size: clamp(26px, 7vw, 40px); font-style: italic; }
+.form-ask { font-size: 15px; font-weight: 600; letter-spacing: .04em; color: var(--accent); }
+.form-note { margin-top: 6px; font-family: var(--ui); font-size: 14px; color: var(--muted); }
+.group-help { margin: 0; font-size: 13px; color: var(--muted); }
 .perfect-hint { font-family: var(--hero); font-style: italic; font-size: 16px; color: var(--muted); }
 .flip-answer {
   border-top: 1px solid var(--line); padding-top: 14px;
@@ -373,6 +376,17 @@ input[type="range"] { flex: 1; min-width: 0; height: 44px; accent-color: var(--a
 .word-latin { font-family: var(--hero); font-size: 18px; overflow-wrap: break-word; }
 .word-perfect { color: var(--muted); font-size: 15px; font-style: italic; }
 .word-english { font-size: 14px; color: var(--muted); overflow-wrap: break-word; }
+.word-row.weak { background: var(--bad-tint); box-shadow: inset 3px 0 0 var(--bad); }
+.weak-key { color: var(--bad); }
+.verb-block { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.verb-head { margin-bottom: 8px; }
+.verb-grid {
+  display: grid; grid-template-columns: 84px minmax(0, 1fr) minmax(0, 1fr); gap: 4px 12px;
+  font-family: var(--hero); font-size: 16px; overflow-wrap: break-word;
+}
+.verb-col, .verb-tense { font-family: var(--ui); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); align-self: center; }
+.grade { color: var(--accent); margin-right: .2em; }
+.btn-primary:disabled { opacity: .4; cursor: default; }
 
 .foot { text-align: center; font-size: 12px; color: var(--muted); padding-top: 4px; }
 
@@ -685,6 +699,115 @@ window.VOCAB = [
 ];
 </script>
 
+<!-- ============================ VERB FORMS ============================ -->
+<script>
+/* ============================================================
+   Verb endings practice. For each checklist verb, keyed by the
+   checklist form (3rd person singular present):
+     [present plural, imperfect singular, perfect singular]
+   The imperfect and perfect plurals are regular, so the app builds
+   them: portābat → portābant, portāvit → portāvērunt.
+   Left out: inquit (no other forms in Unit 1), placet (impersonal),
+   and the checklist entries that are already other forms (adsunt,
+   aberat).
+   ============================================================ */
+window.VERB_FORMS = {
+  "est": ["sunt", "erat", "fuit"],
+  "labōrat": ["labōrant", "labōrābat", "labōrāvit"],
+  "sedet": ["sedent", "sedēbat", "sēdit"],
+  "dormit": ["dormiunt", "dormiēbat", "dormīvit"],
+  "intrat": ["intrant", "intrābat", "intrāvit"],
+  "laudat": ["laudant", "laudābat", "laudāvit"],
+  "salūtat": ["salūtant", "salūtābat", "salūtāvit"],
+  "bibit": ["bibunt", "bibēbat", "bibit"],
+  "circumspectat": ["circumspectant", "circumspectābat", "circumspectāvit"],
+  "clāmat": ["clāmant", "clāmābat", "clāmāvit"],
+  "exit": ["exeunt", "exībat", "exiit"],
+  "exspectat": ["exspectant", "exspectābat", "exspectāvit"],
+  "portat": ["portant", "portābat", "portāvit"],
+  "respondet": ["respondent", "respondēbat", "respondit"],
+  "rīdet": ["rīdent", "rīdēbat", "rīsit"],
+  "surgit": ["surgunt", "surgēbat", "surrēxit"],
+  "videt": ["vident", "vidēbat", "vīdit"],
+  "agit": ["agunt", "agēbat", "ēgit"],
+  "coquit": ["coquunt", "coquēbat", "coxit"],
+  "habet": ["habent", "habēbat", "habuit"],
+  "quaerit": ["quaerunt", "quaerēbat", "quaesīvit"],
+  "reddit": ["reddunt", "reddēbat", "reddidit"],
+  "vocat": ["vocant", "vocābat", "vocāvit"],
+  "adest": ["adsunt", "aderat", "adfuit"],
+  "ambulat": ["ambulant", "ambulābat", "ambulāvit"],
+  "audit": ["audiunt", "audiēbat", "audīvit"],
+  "contendit": ["contendunt", "contendēbat", "contendit"],
+  "currit": ["currunt", "currēbat", "cucurrit"],
+  "petit": ["petunt", "petēbat", "petīvit"],
+  "plaudit": ["plaudunt", "plaudēbat", "plausit"],
+  "spectat": ["spectant", "spectābat", "spectāvit"],
+  "stat": ["stant", "stābat", "stetit"],
+  "venit": ["veniunt", "veniēbat", "vēnit"],
+  "abest": ["absunt", "aberat", "āfuit"],
+  "emit": ["emunt", "emēbat", "ēmit"],
+  "festīnat": ["festīnant", "festīnābat", "festīnāvit"],
+  "pulsat": ["pulsant", "pulsābat", "pulsāvit"],
+  "scrībit": ["scrībunt", "scrībēbat", "scrīpsit"],
+  "superat": ["superant", "superābat", "superāvit"],
+  "vēndit": ["vēndunt", "vēndēbat", "vēndidit"],
+  "vituperat": ["vituperant", "vituperābat", "vituperāvit"],
+  "cēnat": ["cēnant", "cēnābat", "cēnāvit"],
+  "cōnspicit": ["cōnspiciunt", "cōnspiciēbat", "cōnspexit"],
+  "facit": ["faciunt", "faciēbat", "fēcit"],
+  "intellegit": ["intellegunt", "intellegēbat", "intellēxit"],
+  "lacrimat": ["lacrimant", "lacrimābat", "lacrimāvit"],
+  "nārrat": ["nārrant", "nārrābat", "nārrāvit"],
+  "necat": ["necant", "necābat", "necāvit"],
+  "parat": ["parant", "parābat", "parāvit"],
+  "prōcēdit": ["prōcēdunt", "prōcēdēbat", "prōcessit"],
+  "rogat": ["rogant", "rogābat", "rogāvit"],
+  "terret": ["terrent", "terrēbat", "terruit"],
+  "agitat": ["agitant", "agitābat", "agitāvit"],
+  "cōnsūmit": ["cōnsūmunt", "cōnsūmēbat", "cōnsūmpsit"],
+  "dūcit": ["dūcunt", "dūcēbat", "dūxit"],
+  "postulat": ["postulant", "postulābat", "postulāvit"],
+  "pugnat": ["pugnant", "pugnābat", "pugnāvit"],
+  "agnōscit": ["agnōscunt", "agnōscēbat", "agnōvit"],
+  "cupit": ["cupiunt", "cupiēbat", "cupīvit"],
+  "dat": ["dant", "dabat", "dedit"],
+  "ēmittit": ["ēmittunt", "ēmittēbat", "ēmīsit"],
+  "fert": ["ferunt", "ferēbat", "tulit"],
+  "īnspicit": ["īnspiciunt", "īnspiciēbat", "īnspexit"],
+  "manet": ["manent", "manēbat", "mānsit"],
+  "offert": ["offerunt", "offerēbat", "obtulit"],
+  "ostendit": ["ostendunt", "ostendēbat", "ostendit"],
+  "revenit": ["reveniunt", "reveniēbat", "revēnit"],
+  "trādit": ["trādunt", "trādēbat", "trādidit"],
+  "abit": ["abeunt", "abībat", "abiit"],
+  "accipit": ["accipiunt", "accipiēbat", "accēpit"],
+  "exclāmat": ["exclāmant", "exclāmābat", "exclāmāvit"],
+  "habitat": ["habitant", "habitābat", "habitāvit"],
+  "invenit": ["inveniunt", "inveniēbat", "invēnit"],
+  "nūntiat": ["nūntiant", "nūntiābat", "nūntiāvit"],
+  "servat": ["servant", "servābat", "servāvit"],
+  "tacet": ["tacent", "tacēbat", "tacuit"],
+  "capit": ["capiunt", "capiēbat", "cēpit"],
+  "convenit": ["conveniunt", "conveniēbat", "convēnit"],
+  "crēdit": ["crēdunt", "crēdēbat", "crēdidit"],
+  "favet": ["favent", "favēbat", "fāvit"],
+  "invītat": ["invītant", "invītābat", "invītāvit"],
+  "it": ["eunt", "ībat", "iit"],
+  "legit": ["legunt", "legēbat", "lēgit"],
+  "prōmittit": ["prōmittunt", "prōmittēbat", "prōmīsit"],
+  "verberat": ["verberant", "verberābat", "verberāvit"],
+  "āmittit": ["āmittunt", "āmittēbat", "āmīsit"],
+  "complet": ["complent", "complēbat", "complēvit"],
+  "custōdit": ["custōdiunt", "custōdiēbat", "custōdīvit"],
+  "fugit": ["fugiunt", "fugiēbat", "fūgit"],
+  "iacet": ["iacent", "iacēbat", "iacuit"],
+  "mittit": ["mittunt", "mittēbat", "mīsit"],
+  "sentit": ["sentiunt", "sentiēbat", "sēnsit"],
+  "timet": ["timent", "timēbat", "timuit"],
+};
+</script>
+
 <!-- ============================== THE APP =============================== -->
 <script>
 /* ============================================================
@@ -696,6 +819,7 @@ window.VOCAB = [
   "use strict";
 
   var VOCAB = (window.VOCAB || []).slice();
+  var VERB_FORMS = window.VERB_FORMS || {};
 
   var LENGTHS = [10, 25, 50, 100];
   var CHOICE_COUNT = 4;          // one answer + three distractors
@@ -704,6 +828,13 @@ window.VOCAB = [
 
   var CONFIG_KEY = "clc-vocab-config-v1";
   var THEME_KEY = "clc-vocab-theme-v1";
+  var STATS_KEY = "clc-vocab-stats-v1";
+
+  var TENSES = ["present", "imperfect", "perfect"];
+  var TENSE_LABEL = { present: "Present", imperfect: "Imperfect", perfect: "Perfect" };
+  var NUMBERS = ["sg", "pl"];
+  var NUMBER_LABEL = { sg: "singular", pl: "plural" };
+  var MASTERED_STREAK = 2;       // right this many times in a row = no longer weak
 
   var DEFAULT_CONFIG = {
     direction: "la-en",
@@ -713,7 +844,12 @@ window.VOCAB = [
     length: 25,
     custom: 30,
     timerOn: false,
-    timerSecs: 15
+    timerSecs: 15,
+    weakOnly: false,
+    practice: "words",             // "words" = the checklist; "forms" = verb endings
+    formDir: "mixed",              // "name" the form, "make" the form, or both
+    tenses: ["present", "imperfect", "perfect"],
+    testMode: false
   };
 
   /* ---------- tiny helpers ---------- */
@@ -827,6 +963,7 @@ window.VOCAB = [
     function push(list) {
       list.forEach(function (v) { if (out.indexOf(v) < 0) out.push(v); });
     }
+    if (q.kind === "form") return variantsOf(q.answer);
     if (q.dir === "en-la") {
       push(variantsOf(e.latin));
       if (e.perfect) push(variantsOf(e.perfect));   // accepted, never required
@@ -908,7 +1045,42 @@ window.VOCAB = [
     c.custom = clamp(parseInt(c.custom, 10) || DEFAULT_CONFIG.custom, 1, MAX_CUSTOM);
     c.timerOn = !!c.timerOn;
     c.timerSecs = clamp(parseInt(c.timerSecs, 10) || DEFAULT_CONFIG.timerSecs, 5, 30);
+    c.weakOnly = !!c.weakOnly;
+    if (["words", "forms"].indexOf(c.practice) < 0) c.practice = DEFAULT_CONFIG.practice;
+    if (["name", "make", "mixed"].indexOf(c.formDir) < 0) c.formDir = DEFAULT_CONFIG.formDir;
+    c.tenses = TENSES.filter(function (t) { return Array.isArray(c.tenses) && c.tenses.indexOf(t) >= 0; });
+    if (!c.tenses.length) c.tenses = TENSES.slice();
+    c.testMode = !!c.testMode;
+    if (c.testMode && c.format === "flashcard") c.format = "choice";
     return c;
+  }
+
+  /* ---------- weak words ----------
+     Every answer is tallied per word on this device. A word is "weak"
+     once missed, until it is answered right MASTERED_STREAK times running. */
+
+  function wordKey(e) { return e.stage + "|" + e.latin; }
+
+  function loadStats() {
+    try {
+      var s = JSON.parse(readStore(STATS_KEY) || "{}");
+      return s && typeof s === "object" ? s : {};
+    } catch (e) { return {}; }
+  }
+
+  var stats = loadStats();
+
+  function noteResult(entry, correct) {
+    var k = wordKey(entry);
+    var s = stats[k] || { right: 0, wrong: 0, streak: 0 };
+    if (correct) { s.right++; s.streak++; } else { s.wrong++; s.streak = 0; }
+    stats[k] = s;
+    writeStore(STATS_KEY, JSON.stringify(stats));
+  }
+
+  function isWeak(e) {
+    var s = stats[wordKey(e)];
+    return !!s && s.wrong > 0 && s.streak < MASTERED_STREAK;
   }
 
   var state = {
@@ -935,10 +1107,19 @@ window.VOCAB = [
     render();
   }
 
-  function poolFor(c) {
+  // Every word the chosen stages cover.
+  function scopePool(c) {
     return VOCAB.filter(function (e) {
       return c.scopeMode === "single" ? e.stage === c.stage : e.stage <= c.stage;
     });
+  }
+
+  // The words a session will test: the scope, just its weak words,
+  // or — for verb endings — the scope's verbs.
+  function poolFor(c) {
+    var pool = scopePool(c);
+    if (c.practice === "forms") return pool.filter(function (e) { return !!VERB_FORMS[e.latin]; });
+    return c.weakOnly ? pool.filter(isWeak) : pool;
   }
 
   function wantedLength(c) {
@@ -965,7 +1146,7 @@ window.VOCAB = [
   }
 
   function buildQueue(entries, c) {
-    var pool = poolFor(c);
+    var pool = scopePool(c);       // distractors come from the whole scope
     if (pool.length < 2) pool = VOCAB;
     return entries.map(function (entry) {
       var dir = c.direction === "mixed"
@@ -987,10 +1168,90 @@ window.VOCAB = [
     });
   }
 
+  /* ---------- verb endings ---------- */
+
+  // All six 3rd-person forms of a checklist verb, or null if it has none.
+  function formsOf(entry) {
+    var f = VERB_FORMS[entry.latin];
+    if (!f) return null;
+    return {
+      present: { sg: entry.latin, pl: f[0] },
+      imperfect: { sg: f[1], pl: f[1].replace(/t$/, "nt") },          // portābat → portābant
+      perfect: { sg: f[2], pl: f[2].replace(/it$/, "ērunt") }          // portāvit → portāvērunt
+    };
+  }
+
+  function formLabel(tense, number) { return TENSE_LABEL[tense] + " · " + NUMBER_LABEL[number]; }
+
+  function eachForm(forms, fn) {
+    TENSES.forEach(function (t) { NUMBERS.forEach(function (n) { fn(t, n, forms[t][n]); }); });
+  }
+
+  // Every verb × tense × number the settings allow, with the ways it can be
+  // asked. A form that looks like another form of the same verb (bibit is
+  // present and perfect) can't fairly be named; the present singular is the
+  // checklist word itself, so there is nothing to make.
+  function formItems(pool, c) {
+    var items = [];
+    pool.forEach(function (e) {
+      var forms = formsOf(e);
+      if (!forms) return;
+      c.tenses.forEach(function (t) {
+        NUMBERS.forEach(function (n) {
+          var form = forms[t][n];
+          var clash = false;
+          eachForm(forms, function (t2, n2, f2) {
+            if ((t2 !== t || n2 !== n) && norm(f2) === norm(form)) clash = true;
+          });
+          var dirs = [];
+          if (!clash && c.format !== "type") dirs.push("name");
+          if (!(t === "present" && n === "sg")) dirs.push("make");
+          if (dirs.length) items.push({ entry: e, forms: forms, tense: t, number: n, dirs: dirs });
+        });
+      });
+    });
+    return items;
+  }
+
+  function buildFormQueue(items, c) {
+    return items.map(function (it) {
+      var want = c.formDir === "mixed" ? it.dirs : it.dirs.filter(function (d) { return d === c.formDir; });
+      if (!want.length) want = it.dirs;
+      var dir = want[Math.floor(Math.random() * want.length)];
+      var form = it.forms[it.tense][it.number];
+      var label = formLabel(it.tense, it.number);
+      var q = {
+        kind: "form",
+        entry: it.entry,
+        dir: dir,
+        prompt: dir === "name" ? form : it.entry.latin,
+        ask: dir === "name" ? "Which form is this?" : label,
+        answer: dir === "name" ? label : form,
+        note: it.entry.latin + " — " + glossOf(it.entry)
+      };
+      if (c.format === "choice") {
+        var others = [];
+        eachForm(it.forms, function (t, n, f) {
+          // Skip anything spelled like the answer, or it would also be right.
+          if ((t === it.tense && n === it.number) || norm(f) === norm(form)) return;
+          var opt = dir === "name" ? formLabel(t, n) : f;
+          if (others.every(function (o) { return norm(o) !== norm(opt); })) others.push(opt);
+        });
+        q.options = shuffle([q.answer].concat(shuffle(others).slice(0, CHOICE_COUNT - 1)));
+        q.answerIndex = q.options.indexOf(q.answer);
+      }
+      return q;
+    });
+  }
+
   function startSession(entries, note) {
+    startQueue(buildQueue(entries, state.config), note);
+  }
+
+  function startQueue(queue, note) {
     var c = state.config;
     state.screen = "session";
-    state.queue = buildQueue(entries, c);
+    state.queue = queue;
     state.idx = 0;
     state.results = [];
     state.answered = false;
@@ -1009,6 +1270,13 @@ window.VOCAB = [
     var pool = poolFor(c);
     if (!pool.length) return;
     var want = wantedLength(c);
+    if (c.practice === "forms") {
+      var items = formItems(pool, c);
+      if (!items.length) return;
+      startQueue(buildFormQueue(dealWords(items, want), c),
+        want > items.length ? items.length + " forms in this scope — some come up again." : "");
+      return;
+    }
     var note = want > pool.length
       ? pool.length + " words in this scope — each comes up about " + Math.ceil(want / pool.length) + "×."
       : "";
@@ -1024,6 +1292,30 @@ window.VOCAB = [
     return out;
   }
 
+  // Each missed verb-form question once, choices reshuffled.
+  function missedForms() {
+    var seen = {};
+    var out = [];
+    state.results.forEach(function (r) {
+      var key = r.q.prompt + "|" + r.q.answer;
+      if (r.correct || seen[key]) return;
+      seen[key] = true;
+      var q = {};
+      Object.keys(r.q).forEach(function (k) { q[k] = r.q[k]; });
+      if (q.options) {
+        q.options = shuffle(q.options);
+        q.answerIndex = q.options.indexOf(q.answer);
+      }
+      out.push(q);
+    });
+    return out;
+  }
+
+  function retryMissed() {
+    if (state.results.some(function (r) { return r.q.kind === "form"; })) startQueue(shuffle(missedForms()), "");
+    else startSession(shuffle(missedEntries()), "");
+  }
+
   /* ---------- answering ---------- */
 
   function record(correct, given, timedOut) {
@@ -1031,6 +1323,13 @@ window.VOCAB = [
     var q = state.queue[state.idx];
     if (!q) return;
     state.results.push({ q: q, given: given, correct: !!correct, timedOut: !!timedOut });
+    if (!q.kind) noteResult(q.entry, !!correct);   // weak-word tally is for checklist words
+    // Test mode: no feedback, straight on to the next question.
+    if (state.config.testMode) {
+      state.answered = true;
+      nextQuestion();
+      return;
+    }
     state.answered = true;
     state.wasCorrect = !!correct;
     state.given = given;
@@ -1077,6 +1376,12 @@ window.VOCAB = [
   }
 
   function finishSession() {
+    // A test is marked out of every question, so ending early counts the rest as skipped.
+    if (state.config.testMode) {
+      for (var i = state.results.length; i < state.queue.length; i++) {
+        state.results.push({ q: state.queue[i], given: null, correct: false, timedOut: false, skipped: true });
+      }
+    }
     state.screen = "review";
     state.elapsed = Math.max(0, Math.round((Date.now() - state.startedAt) / 1000));
     state.filter = "all";
@@ -1099,14 +1404,32 @@ window.VOCAB = [
 
   function setupHTML() {
     var c = state.config;
+    var forms = c.practice === "forms";
+    var scopeWords = scopePool(c);
+    var weakCount = scopeWords.filter(isWeak).length;
     var pool = poolFor(c);
+    var askable = forms ? formItems(pool, c).length : pool.length;
     var n = wantedLength(c);
-    var repeats = n > pool.length && pool.length > 0;
+    var repeats = n > askable && askable > 0;
 
-    var direction = '<div class="options">' +
-      pill("direction", "la-en", "Latin → English", c.direction === "la-en") +
-      pill("direction", "en-la", "English → Latin", c.direction === "en-la") +
-      pill("direction", "mixed", "Mixed", c.direction === "mixed") + "</div>";
+    var practice = '<div class="options">' +
+      pill("practice", "words", "Checklist words", !forms) +
+      pill("practice", "forms", "Verb endings", forms) + "</div>";
+
+    var direction = forms
+      ? '<div class="options">' +
+          pill("formDir", "name", "Name the form", c.formDir === "name") +
+          pill("formDir", "make", "Make the form", c.formDir === "make") +
+          pill("formDir", "mixed", "Mixed", c.formDir === "mixed") + "</div>"
+      : '<div class="options">' +
+          pill("direction", "la-en", "Latin → English", c.direction === "la-en") +
+          pill("direction", "en-la", "English → Latin", c.direction === "en-la") +
+          pill("direction", "mixed", "Mixed", c.direction === "mixed") + "</div>";
+
+    var tenses = '<div class="options">' + TENSES.map(function (t) {
+      return pill("tense", t, TENSE_LABEL[t], c.tenses.indexOf(t) >= 0);
+    }).join("") + "</div>" +
+      '<p class="group-help">Singular (s/he) and plural (they) of each: portat · portant, portābat · portābant, portāvit · portāvērunt.</p>';
 
     var format = '<div class="options">' +
       pill("format", "flashcard", "Flashcard", c.format === "flashcard") +
@@ -1121,7 +1444,10 @@ window.VOCAB = [
     var scope = '<div class="options">' +
       pill("scopeMode", "single", "This stage only", c.scopeMode === "single") +
       pill("scopeMode", "cumulative", "Everything up to it", c.scopeMode === "cumulative") +
-      '</div><div class="stage-grid">' + stages + "</div>";
+      '</div><div class="stage-grid">' + stages + "</div>" +
+      (forms ? "" : '<div class="options">' +
+        pill("weakOnly", "off", "All words", !c.weakOnly) +
+        pill("weakOnly", "on", "Only ones I keep missing (" + weakCount + ")", c.weakOnly) + "</div>");
 
     var lengthOpts = LENGTHS.map(function (l) {
       return pill("length", String(l), String(l), c.length === l);
@@ -1140,29 +1466,46 @@ window.VOCAB = [
           c.timerSecs + '" aria-label="Seconds per question"><div class="range-value">' + c.timerSecs + "s</div></div>"
         : "");
 
-    var summary = n + " question" + (n === 1 ? "" : "s") + " · " +
-      (c.scopeMode === "single" ? "Stage " + c.stage : "Stages 1–" + c.stage) +
-      (c.timerOn ? " · " + c.timerSecs + "s each" : "");
+    var mode = '<div class="options">' +
+      pill("testMode", "off", "Practice", !c.testMode) +
+      pill("testMode", "on", "Test", c.testMode) + "</div>" +
+      (c.testMode
+        ? '<p class="group-help">No answers shown until the end, then you get a grade. Tests use multiple choice or typing.</p>'
+        : "");
+
+    var where = c.scopeMode === "single" ? "Stage " + c.stage : "Stages 1–" + c.stage;
+    var summary = !askable
+      ? (forms ? "No verbs in " + where + " — pick a later stage."
+               : "No weak words in this scope yet — miss a few and they'll show up here.")
+      : n + " question" + (n === 1 ? "" : "s") + " · " + where +
+        (forms ? " · verb endings" : c.weakOnly ? " · weak words" : "") +
+        (c.timerOn ? " · " + c.timerSecs + "s each" : "") +
+        (c.testMode ? " · test" : "");
 
     return '<main class="screen">' +
       '<header class="masthead">' +
         '<div class="masthead-rule"></div>' +
-        '<div class="masthead-meta"><span class="left">Cambridge Latin Course</span><span class="right">I – XII</span></div>' +
+        '<div class="masthead-meta"><span class="left">Cambridge Latin Course · 6th ed.</span><span class="right">I – XII</span></div>' +
         "<h1>Vocābulārium</h1>" +
         '<p class="tagline">Pick how you want to practise, then begin.</p>' +
       "</header>" +
-      group("Direction", "", direction) +
-      group("Format", "", format) +
-      group("Scope", pool.length + " words", scope) +
-      group("Length", repeats ? "words will repeat" : "", length) +
+      group("Practise", "", practice) +
+      group(forms ? "Question" : "Direction", "", direction) +
+      (forms ? group("Tenses", "", tenses) : "") +
+      group("Format", forms && c.format === "type" ? "typing always makes the form" : "", format) +
+      group("Scope", forms ? pool.length + " verbs" : pool.length + " words", scope) +
+      group("Length", repeats ? (forms ? "forms will repeat" : "words will repeat") : "", length) +
       group("Timer", "", timer) +
+      group("Mode", "", mode) +
       '<div class="start-block">' +
-        '<button type="button" class="btn-primary" data-action="start">Begin session</button>' +
-        '<button type="button" class="btn-secondary" data-action="words">See the ' + pool.length +
-          " word" + (pool.length === 1 ? "" : "s") + "</button>" +
+        '<button type="button" class="btn-primary" data-action="start"' + (askable ? "" : " disabled") + ">" +
+          (c.testMode ? "Start test" : "Begin session") + "</button>" +
+        '<button type="button" class="btn-secondary" data-action="words">' +
+          (forms ? "See the verb tables" : "See the " + scopeWords.length + " word" + (scopeWords.length === 1 ? "" : "s")) +
+        "</button>" +
         '<div class="summary">' + esc(summary) + "</div>" +
       "</div>" +
-      '<p class="foot">' + VOCAB.length + " words · nothing to sign up for · your settings stay on this device</p>" +
+      '<p class="foot">' + VOCAB.length + " words · nothing to sign up for · your settings and progress stay on this device</p>" +
       "</main>";
   }
 
@@ -1174,8 +1517,11 @@ window.VOCAB = [
 
     var done = s.results.length;
     var right = s.results.filter(function (r) { return r.correct; }).length;
+    var isForm = q.kind === "form";
     var latinPrompt = q.dir === "la-en";
+    var latinShown = latinPrompt || isForm;      // the big prompt is a Latin word
     var meanings = q.entry.english || [];
+    var testing = c.testMode;
     var isFlash = c.format === "flashcard";
     var showFeedback = s.answered && (!isFlash || s.timedOut);
     var progress = s.queue.length ? (s.idx / s.queue.length) * 100 : 0;
@@ -1185,7 +1531,7 @@ window.VOCAB = [
       '<div class="session-meta">' +
         '<button type="button" class="link-btn" data-action="quit">← End</button>' +
         "<span>" + (s.idx + 1) + " of " + s.queue.length + "</span>" +
-        '<span class="right"><span>' + (done ? Math.round((right / done) * 100) + "%" : "—") + "</span>" +
+        '<span class="right"><span>' + (testing ? "Test" : done ? Math.round((right / done) * 100) + "%" : "—") + "</span>" +
         (c.timerOn ? '<span id="timer" class="timer' + (low ? " low" : "") + '">' +
           Math.max(0, Math.ceil(s.timeLeft)) + "s</span>" : "") +
         "</span>" +
@@ -1198,13 +1544,16 @@ window.VOCAB = [
     var card = '<div class="prompt-card">' +
       '<div class="prompt-label">' +
         (q.entry.stage ? "Stage " + q.entry.stage + " · " : "") +
-        (latinPrompt ? "Latin → English" : "English → Latin") +
+        (isForm ? (q.dir === "name" ? "Name the form" : "Make the form")
+          : latinPrompt ? "Latin → English" : "English → Latin") +
       "</div>" +
-      '<div class="prompt-word' + (latinPrompt ? "" : " gloss") + '">' + esc(q.prompt) + "</div>" +
-      (isFlash && s.flipped && q.entry.perfect
+      '<div class="prompt-word' + (latinShown ? "" : " gloss") + '">' + esc(q.prompt) + "</div>" +
+      (isForm ? '<div class="form-ask">' + esc(q.ask) + "</div>" : "") +
+      (isFlash && s.flipped && q.entry.perfect && !isForm
         ? '<div class="perfect-hint">perfect: ' + esc(q.entry.perfect) + "</div>" : "") +
       (isFlash && s.flipped
-        ? '<div class="flip-answer">' + esc(q.answer) + "</div>" : "") +
+        ? '<div class="flip-answer">' + esc(q.answer) +
+          (isForm ? '<div class="form-note">' + esc(q.note) + "</div>" : "") + "</div>" : "") +
       "</div>";
 
     var body = "";
@@ -1225,7 +1574,7 @@ window.VOCAB = [
       body = '<form class="type-form" id="type-form">' +
         '<input id="type-input" class="type-input" type="text" autocapitalize="off" autocorrect="off" ' +
         'autocomplete="off" spellcheck="false" enterkeyhint="go" aria-label="Your answer" placeholder="' +
-        (latinPrompt ? "English meaning" : "Latin word") + '"' + (s.answered ? " disabled" : "") + ">" +
+        (isForm ? "Latin form" : latinPrompt ? "English meaning" : "Latin word") + '"' + (s.answered ? " disabled" : "") + ">" +
         (s.answered ? "" : '<button type="submit" class="btn-check">Check</button>') +
         "</form>";
     } else if (!s.answered) {
@@ -1249,18 +1598,19 @@ window.VOCAB = [
         '<div class="feedback-answer">' + esc(q.answer) + "</div>" +
         (latinPrompt && meanings.length > 1
           ? '<div class="feedback-extra">Also accepted: ' + esc(meanings.join(" · ")) + "</div>" : "") +
-        (q.entry.perfect && !latinPrompt
+        (q.entry.perfect && !latinPrompt && !isForm
           ? '<div class="feedback-extra">Perfect: ' + esc(q.entry.perfect) + "</div>" : "") +
+        (isForm ? '<div class="feedback-extra">' + esc(q.note) + "</div>" : "") +
         '<button type="button" class="btn-next" data-action="next">' +
           (s.idx + 1 >= s.queue.length ? "See results" : "Continue") + "</button>" +
       "</div>";
     }
 
     var hint = c.format === "choice"
-      ? "1 – " + (q.options ? q.options.length : CHOICE_COUNT) + " to answer · Enter to continue"
+      ? "1 – " + (q.options ? q.options.length : CHOICE_COUNT) + " to answer" + (testing ? "" : " · Enter to continue")
       : c.format === "flashcard"
         ? "Space to flip · 1 got it · 2 missed it"
-        : "Enter to check, then Enter to continue";
+        : testing ? "Enter to answer" : "Enter to check, then Enter to continue";
 
     return '<main class="screen session">' + head +
       '<section class="play">' + card + body + feedback + "</section>" +
@@ -1269,12 +1619,20 @@ window.VOCAB = [
       "</main>";
   }
 
+  function gradeFor(pct) {
+    return pct >= 90 ? "A" : pct >= 80 ? "B" : pct >= 70 ? "C" : pct >= 60 ? "D" : "F";
+  }
+
   function reviewHTML() {
     var s = state;
     var total = s.results.length;
     var right = s.results.filter(function (r) { return r.correct; }).length;
     var missed = s.results.filter(function (r) { return !r.correct; });
-    var retryCount = missedEntries().length;
+    var isForms = s.results.some(function (r) { return r.q.kind === "form"; });
+    var retryCount = isForms ? missedForms().length : missedEntries().length;
+    var retryNoun = isForms ? "form" : "word";
+    var pct = total ? Math.round((right / total) * 100) : 0;
+    var testing = s.config.testMode;
     var mins = Math.floor(s.elapsed / 60);
     var secs = s.elapsed % 60;
 
@@ -1285,10 +1643,11 @@ window.VOCAB = [
     var rows = shown.map(function (r) {
       var detail = r.correct
         ? r.q.answer
-        : (r.timedOut ? "timed out · " : r.given ? "you: " + r.given + " · " : "") + r.q.answer;
+        : (r.skipped ? "skipped · " : r.timedOut ? "timed out · " : r.given ? "you: " + r.given + " · " : "") + r.q.answer;
+      var prompt = r.q.kind === "form" && r.q.dir === "make" ? r.q.prompt + " → " + r.q.ask : r.q.prompt;
       return '<div class="row"><div class="row-mark ' + (r.correct ? "ok" : "bad") + '">' +
         (r.correct ? "✓" : "✕") + "</div>" +
-        '<div class="row-body"><div class="row-prompt">' + esc(r.q.prompt) + "</div>" +
+        '<div class="row-body"><div class="row-prompt">' + esc(prompt) + "</div>" +
         '<div class="row-detail">' + esc(detail) + "</div></div></div>";
     }).join("");
 
@@ -1301,16 +1660,18 @@ window.VOCAB = [
 
     return '<main class="screen">' +
       '<header class="review-head">' +
-        '<div class="review-kicker">Session complete</div>' +
-        '<div class="review-score">' + right + " / " + total + "</div>" +
-        '<div class="review-line">' + (total ? Math.round((right / total) * 100) : 0) + "% · " +
+        '<div class="review-kicker">' + (testing ? "Test result" : "Session complete") + "</div>" +
+        (testing
+          ? '<div class="review-score"><span class="grade">' + gradeFor(pct) + "</span> " + right + " / " + total + "</div>"
+          : '<div class="review-score">' + right + " / " + total + "</div>") +
+        '<div class="review-line">' + pct + "% · " +
           (mins ? mins + "m " : "") + secs + "s</div>" +
       "</header>" + filters +
       '<div class="rows"><div class="rows-scroll">' + rows + "</div></div>" +
       '<div class="review-actions">' +
         (retryCount
           ? '<button type="button" class="btn-primary" data-action="retry">Retry ' + retryCount +
-            " missed word" + (retryCount === 1 ? "" : "s") + "</button>"
+            " missed " + retryNoun + (retryCount === 1 ? "" : "s") + "</button>"
           : "") +
         '<button type="button" class="btn-secondary" data-action="new">New session</button>' +
       "</div></main>";
@@ -1319,7 +1680,9 @@ window.VOCAB = [
   // The checklist for the current scope, stage by stage, to read before testing.
   function wordsHTML() {
     var c = state.config;
-    var pool = poolFor(c);
+    if (c.practice === "forms") return verbTablesHTML();
+    var pool = scopePool(c);
+    var weak = pool.filter(isWeak).length;
     var body = "";
     var current = null;
     pool.forEach(function (e) {
@@ -1327,7 +1690,7 @@ window.VOCAB = [
         current = e.stage;
         body += '<div class="words-stage">Stage ' + current + "</div>";
       }
-      body += '<div class="word-row"><div class="word-latin">' + esc(e.latin) +
+      body += '<div class="word-row' + (isWeak(e) ? " weak" : "") + '"><div class="word-latin">' + esc(e.latin) +
         (e.perfect ? '<span class="word-perfect">: ' + esc(e.perfect) + "</span>" : "") +
         '</div><div class="word-english">' + esc(glossOf(e)) + "</div></div>";
     });
@@ -1336,11 +1699,48 @@ window.VOCAB = [
       '<header class="review-head">' +
         '<div class="review-kicker">Vocabulary checklist</div>' +
         '<div class="review-score">' + (c.scopeMode === "single" ? "Stage " + c.stage : "Stages 1–" + c.stage) + "</div>" +
-        '<div class="review-line">' + pool.length + " words</div>" +
+        '<div class="review-line">' + pool.length + " words" +
+          (weak ? ' · <span class="weak-key">' + weak + " you keep missing</span>" : "") + "</div>" +
       "</header>" +
       '<div class="rows"><div class="rows-scroll">' + body + "</div></div>" +
       '<div class="review-actions">' +
         '<button type="button" class="btn-primary" data-action="start">Begin session</button>' +
+        '<button type="button" class="btn-secondary" data-action="new">Back to settings</button>' +
+      "</div></main>";
+  }
+
+  // Every verb in scope written out: present, imperfect and perfect, s/he and they.
+  function verbTablesHTML() {
+    var c = state.config;
+    var pool = poolFor(c);
+    var body = "";
+    var current = null;
+    pool.forEach(function (e) {
+      var f = formsOf(e);
+      if (e.stage !== current) {
+        current = e.stage;
+        body += '<div class="words-stage">Stage ' + current + "</div>";
+      }
+      body += '<div class="verb-block"><div class="verb-head"><span class="word-latin">' + esc(e.latin) +
+        '</span> <span class="word-english">' + esc(glossOf(e)) + "</span></div>" +
+        '<div class="verb-grid"><span></span><span class="verb-col">s/he</span><span class="verb-col">they</span>' +
+        TENSES.map(function (t) {
+          return '<span class="verb-tense">' + TENSE_LABEL[t] + "</span><span>" + esc(f[t].sg) +
+            "</span><span>" + esc(f[t].pl) + "</span>";
+        }).join("") + "</div></div>";
+    });
+    if (!body) body = '<div class="rows-empty">No verbs in this scope.</div>';
+
+    return '<main class="screen">' +
+      '<header class="review-head">' +
+        '<div class="review-kicker">Verb tables</div>' +
+        '<div class="review-score">' + (c.scopeMode === "single" ? "Stage " + c.stage : "Stages 1–" + c.stage) + "</div>" +
+        '<div class="review-line">' + pool.length + " verbs</div>" +
+      "</header>" +
+      '<div class="rows"><div class="rows-scroll">' + body + "</div></div>" +
+      '<div class="review-actions">' +
+        '<button type="button" class="btn-primary" data-action="start"' + (pool.length ? "" : " disabled") + ">" +
+          (c.testMode ? "Start test" : "Begin session") + "</button>" +
         '<button type="button" class="btn-secondary" data-action="new">Back to settings</button>' +
       "</div></main>";
   }
@@ -1394,14 +1794,26 @@ window.VOCAB = [
 
     switch (action) {
       case "theme": cycleTheme(); break;
-      case "direction":
       case "format":
+        if (value === "flashcard") state.config.testMode = false;
+        setConfig("format", value);
+        break;
+      case "direction":
       case "scopeMode": setConfig(action, value); break;
       case "stage": setConfig("stage", parseInt(value, 10)); break;
       case "length": setConfig("length", value === "custom" ? "custom" : parseInt(value, 10)); break;
       case "timerOn": setConfig("timerOn", value === "on"); break;
       case "start": beginFromSetup(); break;
       case "words": state.screen = "words"; render(); break;
+      case "weakOnly": setConfig("weakOnly", value === "on"); break;
+      case "practice":
+      case "formDir": setConfig(action, value); break;
+      case "tense": toggleTense(value); break;
+      case "testMode":
+        // Flashcards are self-marked, so a test switches to multiple choice.
+        if (value === "on" && state.config.format === "flashcard") state.config.format = "choice";
+        setConfig("testMode", value === "on");
+        break;
       case "choose": chooseOption(parseInt(value, 10)); break;
       case "flip": state.flipped = true; render(); break;
       case "got": gradeFlash(true); setTimeout(nextQuestion, 200); break;
@@ -1409,11 +1821,18 @@ window.VOCAB = [
       case "next": nextQuestion(); break;
       case "quit": finishSession(); break;
       case "filter": state.filter = value; render(); break;
-      case "retry":
-        startSession(shuffle(missedEntries()), "");
-        break;
+      case "retry": retryMissed(); break;
       case "new": state.screen = "setup"; render(); break;
     }
+  }
+
+  // Tenses are a set; at least one stays on.
+  function toggleTense(t) {
+    var list = state.config.tenses.slice();
+    var i = list.indexOf(t);
+    if (i >= 0) { if (list.length > 1) list.splice(i, 1); }
+    else list.push(t);
+    setConfig("tenses", TENSES.filter(function (x) { return list.indexOf(x) >= 0; }));
   }
 
   function onSubmit(ev) {
@@ -1513,7 +1932,8 @@ window.VOCAB = [
   window.__vocab = {
     norm: norm, isCorrect: isCorrect, variantsOf: variantsOf,
     acceptedFor: acceptedFor, pickDistractors: pickDistractors, dealWords: dealWords,
-    missedEntries: missedEntries, state: state
+    missedEntries: missedEntries, isWeak: isWeak, formsOf: formsOf, formItems: formItems,
+    buildFormQueue: buildFormQueue, state: state
   };
 })();
 </script>
